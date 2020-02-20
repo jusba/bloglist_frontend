@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/logins'
 import LoginForm from './components/Login'
 import BlogForm from './components/Blog'
-import Togglable from './components/Togglable'
+
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -12,7 +11,6 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [newMessage, setMessage] = useState(null)
-  const [liked, setLiked] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -41,15 +39,15 @@ const App = () => {
 
 
   const handleLogout = async (event) => {
-    console.log("logout")
+    console.log('logout')
     event.preventDefault()
     try {
       setUser(null)
       window.localStorage.clear()
       blogService.setToken(null)
-      console.log("logout successfull")
+      console.log('logout successfull')
     } catch (exception) {
-      console.log("logout failed")
+      console.log('logout failed')
     }
   }
 
@@ -57,7 +55,7 @@ const App = () => {
 
     event.preventDefault()
     try {
-      console.log("try")
+      console.log('try')
       const user = await loginService.login({
         username, password,
       })
@@ -71,7 +69,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      console.log("catch")
+      console.log('catch')
       handleMessage('wrong credentials')
       setUsername('')
       setPassword('')
@@ -90,9 +88,9 @@ const App = () => {
     setBlogs(blogsList)
   }
 
-  
 
-  
+
+
   return (
     <div>
 

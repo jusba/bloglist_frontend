@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import Notification from '../components/ErrorMessage'
 import Togglable from './Togglable'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 const jwt = require('jsonwebtoken')
 require('dotenv')
+
 
 
 const Blog = ({ blog,  user, showBlogs }) => {
@@ -21,7 +23,7 @@ const Blog = ({ blog,  user, showBlogs }) => {
 
   const [show, setShow] = useState(false)
   const onClick = (event) => {
-    
+
     event.preventDefault()
     setShow(!show)
   }
@@ -35,30 +37,30 @@ blogService.update(blog).then(response =>{
   */
 
   const decodedToken = jwt.verify(user.token, process.env.REACT_APP_SECRET)
-  
+
   if (show && blog.user.id === decodedToken.id) {
     return (
       <div style={blogStyle}>
-        <p> {blog.title}   {blog.author} <Button onClick={onClick} text={"show"} /></p>
+        <p> {blog.title}   {blog.author} <Button onClick={onClick} text={'show'} /></p>
         <p>{blog.url}</p>
         <p>{blog.likes} <Button onClick={() => {
           blog.likes = blog.likes + 1
-          blogService.update(blog).then(response =>{
-            blogService.getAll().then(response =>{
+          blogService.update(blog).then(response => {
+            blogService.getAll().then(response => {
               showBlogs(response)
             })
           })
-        }} text={"Like"} /></p>
+        }} text={'Like'} /></p>
         <p>{blog.user.name}</p>
         <Button onClick={() => {
           if (window.confirm(`Delete ${blog.title} by ${blog.author}?`)) {
-          blogService.deleteBlog(blog.id).then(response =>{
-            blogService.getAll().then(response =>{
-              showBlogs(response)
+            blogService.deleteBlog(blog.id).then(response => {
+              blogService.getAll().then(response => {
+                showBlogs(response)
+              })
             })
-          })
           }
-        }} text={"remove"} />
+        }} text={'remove'} />
       </div>
     )
   }
@@ -66,22 +68,22 @@ blogService.update(blog).then(response =>{
 
     return (
       <div style={blogStyle}>
-        <p> {blog.title}   {blog.author} <Button onClick={onClick} text={"show"} /></p>
+        <p> {blog.title}   {blog.author} <Button onClick={onClick} text={'show'} /></p>
         <p>{blog.url}</p>
         <p>{blog.likes} <Button onClick={() => {
           blog.likes = blog.likes + 1
-          blogService.update(blog).then(response =>{
-            blogService.getAll().then(response =>{
+          blogService.update(blog).then(response => {
+            blogService.getAll().then(response => {
               showBlogs(response)
             })
           })
-        }} text={"Like"} /></p>
+        }} text={'Like'} /></p>
         <p>{blog.user.name}</p>
       </div>
     )
   }
 
-  return (<div style={blogStyle}> {blog.title}   {blog.author} <Button onClick={onClick} text={"show"} /> </div>)
+  return (<div style={blogStyle}> {blog.title}   {blog.author} <Button onClick={onClick} text={'show'} /> </div>)
 }
 const BlogList = ({ blogs, user, showBlogs }) => {
 
@@ -101,7 +103,7 @@ const Button = ({ onClick, text }) => {
     border: 'none',
     color: 'red'
   }
-  if (text === "remove") {
+  if (text === 'remove') {
     return (
       <button style={buttonStyle} onClick={onClick} >
         {text}
@@ -145,11 +147,19 @@ const CreateNew = ({ addBlog, newTitle, handleTitleAdd, newAuthor, handleAuthorA
 }
 
 const BlogForm = ({ blogs, handleLogout, user, createBlog, newMessage, handleMessage, showBlogs }) => {
-  const [newTitle, setTitle] = useState("")
-  const [newAuthor, setAuthor] = useState("")
-  const [newUrl, setUrl] = useState("")
+  const [newTitle, setTitle] = useState('')
+  const [newAuthor, setAuthor] = useState('')
+  const [newUrl, setUrl] = useState('')
 
-
+  //jätin handlemessagen pois kun se on suurimman osan ajasta null, mutta välillä string joten sotkee asiat
+  BlogForm.propTypes = {
+    blogs: PropTypes.array.isRequired,
+    handleLogout: PropTypes.func.isRequired,
+    user:PropTypes.object.isRequired,
+    createBlog: PropTypes.func.isRequired,
+    handleMessage: PropTypes.func.isRequired,
+    showBlogs: PropTypes.func.isRequired
+  }
 
   const addBlog = (event) => {
     event.preventDefault()
@@ -160,9 +170,9 @@ const BlogForm = ({ blogs, handleLogout, user, createBlog, newMessage, handleMes
         url: newUrl
       })
       handleMessage(`a new blog ${newTitle} by ${newAuthor} added`)
-      setTitle("")
-      setAuthor("")
-      setUrl("")
+      setTitle('')
+      setAuthor('')
+      setUrl('')
     } catch (exception) {
       handleMessage('failed to create message')
     }
@@ -186,7 +196,7 @@ const BlogForm = ({ blogs, handleLogout, user, createBlog, newMessage, handleMes
     <div>
       <h2>blogs</h2>
       <Notification message={newMessage} />
-      <h3>{user.name} logged in  <Button onClick={handleLogout} text={"logout"} /> </h3>
+      <h3>{user.name} logged in  <Button onClick={handleLogout} text={'logout'} /> </h3>
       <Togglable buttonLabel="new blog">
         <CreateNew addBlog={addBlog} newTitle={newTitle} handleTitleAdd={handleTitleAdd} newAuthor={newAuthor} handleAuthorAdd={handleAuthorAdd} newUrl={newUrl} handleUrlAdd={handleUrlAdd} />
       </Togglable>
