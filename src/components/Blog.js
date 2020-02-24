@@ -3,88 +3,13 @@ import Notification from '../components/ErrorMessage'
 import Togglable from './Togglable'
 import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
+import Blog from './Blog_component'
 const jwt = require('jsonwebtoken')
 require('dotenv')
 
 
 
-const Blog = ({ blog,  user, showBlogs }) => {
 
-
-
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
-
-
-  const [show, setShow] = useState(false)
-  const onClick = (event) => {
-
-    event.preventDefault()
-    setShow(!show)
-  }
-  /*
-blogService.update(blog).then(response =>{
-            blogService.getAll().then(response =>{
-              showBlogs(response)
-            })
-          })
-
-  */
-
-  const decodedToken = jwt.verify(user.token, process.env.REACT_APP_SECRET)
-
-  if (show && blog.user.id === decodedToken.id) {
-    return (
-      <div style={blogStyle}>
-        <p> {blog.title}   {blog.author} <Button onClick={onClick} text={'show'} /></p>
-        <p>{blog.url}</p>
-        <p>{blog.likes} <Button onClick={() => {
-          blog.likes = blog.likes + 1
-          blogService.update(blog).then(response => {
-            blogService.getAll().then(response => {
-              showBlogs(response)
-            })
-          })
-        }} text={'Like'} /></p>
-        <p>{blog.user.name}</p>
-        <Button onClick={() => {
-          if (window.confirm(`Delete ${blog.title} by ${blog.author}?`)) {
-            blogService.deleteBlog(blog.id).then(response => {
-              blogService.getAll().then(response => {
-                showBlogs(response)
-              })
-            })
-          }
-        }} text={'remove'} />
-      </div>
-    )
-  }
-  else if (show) {
-
-    return (
-      <div style={blogStyle}>
-        <p> {blog.title}   {blog.author} <Button onClick={onClick} text={'show'} /></p>
-        <p>{blog.url}</p>
-        <p>{blog.likes} <Button onClick={() => {
-          blog.likes = blog.likes + 1
-          blogService.update(blog).then(response => {
-            blogService.getAll().then(response => {
-              showBlogs(response)
-            })
-          })
-        }} text={'Like'} /></p>
-        <p>{blog.user.name}</p>
-      </div>
-    )
-  }
-
-  return (<div style={blogStyle}> {blog.title}   {blog.author} <Button onClick={onClick} text={'show'} /> </div>)
-}
 const BlogList = ({ blogs, user, showBlogs }) => {
 
   blogs.sort((a, b) => (a.likes - b.likes))
@@ -122,24 +47,27 @@ const CreateNew = ({ addBlog, newTitle, handleTitleAdd, newAuthor, handleAuthorA
     <form onSubmit={addBlog}>
       <div>
         title: <input
+          id = 'title'
           value={newTitle}
           onChange={handleTitleAdd}
         />
       </div>
       <div>
         author: <input
+          id = 'author'
           value={newAuthor}
           onChange={handleAuthorAdd}
         />
       </div>
       <div>
         url: <input
+          id = 'url'
           value={newUrl}
           onChange={handleUrlAdd}
         />
       </div>
       <div>
-        <button type="submit">add</button>
+        <button id="submit-button" type="submit">add</button>
       </div>
     </form>
 
@@ -208,4 +136,4 @@ const BlogForm = ({ blogs, handleLogout, user, createBlog, newMessage, handleMes
 
 }
 
-export default BlogForm
+export default  BlogForm 
