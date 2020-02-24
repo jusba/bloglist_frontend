@@ -136,4 +136,4 @@ const BlogForm = ({ blogs, handleLogout, user, createBlog, newMessage, handleMes
 
 }
 
-export default  BlogForm 
+export default  { BlogForm, CreateNew }

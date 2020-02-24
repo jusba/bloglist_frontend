@@ -4,29 +4,27 @@ const jwt = require('jsonwebtoken')
 require('dotenv')
 
 const Button = ({ onClick, text }) => {
-    const buttonStyle = {
-      border: 'none',
-      color: 'red'
-    }
-    if (text === 'remove') {
-      return (
-        <button style={buttonStyle} onClick={onClick} >
-          {text}
-        </button>
-      )
-    }
+  const buttonStyle = {
+    border: 'none',
+    color: 'red'
+  }
+  if (text === 'remove') {
     return (
-      <button onClick={onClick} >
+      <button style={buttonStyle} onClick={onClick} >
         {text}
       </button>
     )
   }
+  return (
+    <button onClick={onClick} >
+      {text}
+    </button>
+  )
+}
 
 const Blog = ({ blog,  user, showBlogs, testiFunctio }) => {
 
-    if(testiFunctio != null){
-        console.log("testit on parasta")
-    }
+
 
   const blogStyle = {
     paddingTop: 10,
@@ -53,19 +51,19 @@ blogService.update(blog).then(response =>{
   */
 
   // poistin nämä jotta testaus toimii
-//  const decodedToken = jwt.verify(user.token, process.env.REACT_APP_SECRET)
-const pressLike = () =>{
-    
+  //  const decodedToken = jwt.verify(user.token, process.env.REACT_APP_SECRET)
+  const pressLike = () => {
+
     blog.likes = blog.likes + 1
     blogService.update(blog).then(response => {
       blogService.getAll().then(response => {
         showBlogs(response)
-          })
-        })
-      
-}
- // if (show && blog.user.id === decodedToken.id) {
-    if (show && blog.user.username === user.username) {
+      })
+    })
+
+  }
+  // if (show && blog.user.id === decodedToken.id) {
+  if (show && blog.user.username === user.username) {
     return (
       <div style={blogStyle}>
         <p> {blog.title}   {blog.author} <Button onClick={onClick} text={'show'} /></p>

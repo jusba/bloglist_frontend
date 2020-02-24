@@ -2,6 +2,7 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent, cleanup } from '@testing-library/react'
 import Blog from '../components/Blog_component'
+import BlogForm from '../components/Blog'
 
 
 const blog = {
@@ -37,14 +38,14 @@ test('show url/likes after button', () => {
 })
 
 test('renders only title and author', () => {
-  
+
 
 
   const component = render(
     <Blog blog={blog} user ={blog.user} />
   )
 
-  
+
 
   expect(component.container).toHaveTextContent(
     blog.title
@@ -61,7 +62,7 @@ test('renders only title and author', () => {
 })
 
 
-  
+
 test('like gets pressed twice -> onClick gets pressed twice', () => {
   const blog2 = {
 
@@ -81,16 +82,17 @@ test('like gets pressed twice -> onClick gets pressed twice', () => {
   )
   const button2 = component2.getByText('show')
   fireEvent.click(button2)
-  
+
 
 
   const button3 = component.getByText('Like')
   fireEvent.click(button3)
-  fireEvent.click(button3)  
+  fireEvent.click(button3)
 
 
   expect(blog2.likes).toBe(2)
-  
- 
+
+
 })
+
 
